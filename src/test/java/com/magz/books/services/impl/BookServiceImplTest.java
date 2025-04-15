@@ -1,5 +1,7 @@
 package com.magz.books.services.impl;
 
+
+import com.magz.books.TestData;
 import com.magz.books.domain.Book;
 import com.magz.books.domain.BookEntity;
 import com.magz.books.repositories.BookRepository;
@@ -7,7 +9,6 @@ import com.magz.books.repositories.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -42,16 +43,11 @@ public class BookServiceImplTest {
     public void testCreateBook() {
         // Arrange
         /*Creates a Book object that we'll pass to the service*/
-        Book bookToCreate = new Book();
-        bookToCreate.setIsbn("978-1234567890");
-        bookToCreate.setTitle("The Great Novel");
-        bookToCreate.setAuthor("Jane Smith");
+        Book bookToCreate = TestData.testBook();
 
         /*Creates a BookEntity that will be returned when the repository's save method is called*/
-        BookEntity savedEntity = new BookEntity();
-        savedEntity.setIsbn("978-1234567890");
-        savedEntity.setTitle("The Great Novel");
-        savedEntity.setAuthor("Jane Smith");
+
+        BookEntity savedEntity = TestData.testBookEntity();
 
         /*Sets up the mock behavior with when(...).thenReturn(...) - this is crucial for controlling what our dependencies do during the test*/
         when(bookRepository.save(any(BookEntity.class))).thenReturn(savedEntity);
