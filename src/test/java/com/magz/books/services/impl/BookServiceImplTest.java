@@ -12,6 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -85,4 +87,27 @@ public class BookServiceImplTest {
     3.Both Book and BookEntity are used by the service for different purposes
 
     This separation of concerns makes the code more maintainable and testable.*/
+
+
+    @Test
+    public void testThatFindByIdReturnsEmptyWhenNoBook(){
+        final String isbn = "123123123";
+        when(bookRepository.findById(eq(isbn))).thenReturn(Optional.empty());
+
+        final Optional<Book> result = bookService.findById(isbn);
+        assertEquals(Optional.empty(), result);
+    }
+
+    @Test
+    public void testThatFindByIdReturnsBookWhenExists(){
+        final Book book = TestData.testBook();
+        final BookEntity bookEntity = TestData.testBookEntity();
+
+        when(bookRepository.findById(eq(book.getIsbn()))).thenReturn(Optional.of(bookEntity));
+
+        final Optional<Book> result = bookService.findById(book.getIsbn());
+        assertEquals(Optional.of(book), result);
+    }
 }
+
+
