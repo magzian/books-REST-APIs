@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -38,4 +39,12 @@ public class BookController {
         return foundBook.map(book -> new ResponseEntity<Book>(book, HttpStatus.OK))
                 .orElse(new ResponseEntity<Book>(HttpStatus.NOT_FOUND));
     }
+
+    @GetMapping(path = "/books")
+    public ResponseEntity<List<Book>> listBooks() {
+        return new ResponseEntity<List<Book>>(bookService.listBook(),HttpStatus.OK);
+    }
+
+
+
 }

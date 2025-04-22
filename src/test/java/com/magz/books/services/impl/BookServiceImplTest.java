@@ -12,6 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -107,6 +109,22 @@ public class BookServiceImplTest {
 
         final Optional<Book> result = bookService.findById(book.getIsbn());
         assertEquals(Optional.of(book), result);
+    }
+
+    @Test
+    public void testListBookReturnsEmptyListWhenNoBooksExist() {
+        when(bookRepository.findAll()).thenReturn(new ArrayList<BookEntity>());
+        final List<Book> result = bookService.listBook();
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    public void testListBooksReturnBooksWhenExists() {
+        final BookEntity bookEntity = TestData.testBookEntity();
+
+        when(bookRepository.findAll()).thenReturn(List.of(bookEntity));
+        final List<Book> result = bookService.listBook();
+        assertEquals(1, result.size());
     }
 
 
