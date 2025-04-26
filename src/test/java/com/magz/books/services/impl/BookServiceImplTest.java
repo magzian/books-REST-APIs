@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.magz.books.TestData.testBook;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -47,7 +48,7 @@ public class BookServiceImplTest {
     public void testCreateBook() {
         // Arrange
         /*Creates a Book object that we'll pass to the service*/
-        Book bookToCreate = TestData.testBook();
+        Book bookToCreate = testBook();
 
         /*Creates a BookEntity that will be returned when the repository's save method is called*/
 
@@ -102,7 +103,7 @@ public class BookServiceImplTest {
 
     @Test
     public void testThatFindByIdReturnsBookWhenExists(){
-        final Book book = TestData.testBook();
+        final Book book = testBook();
         final BookEntity bookEntity = TestData.testBookEntity();
 
         when(bookRepository.findById(eq(book.getIsbn()))).thenReturn(Optional.of(bookEntity));
@@ -125,6 +126,20 @@ public class BookServiceImplTest {
         when(bookRepository.findAll()).thenReturn(List.of(bookEntity));
         final List<Book> result = bookService.listBook();
         assertEquals(1, result.size());
+    }
+
+    @Test
+    public void testsBookExistsReturnFalseWhenBookDoesntExist(){
+        when(bookRepository.existsById(any())).thenReturn(false);
+        final boolean result = bookService.isBookExists(testBook());
+        assertEquals(false,result);
+    }
+
+    @Test
+    public void testsBookExistsReturnTrueWhenBookDoesExist(){
+        when(bookRepository.existsById(any())).thenReturn(true);
+        final boolean result = bookService.isBookExists(testBook());
+        assertEquals(true,result);
     }
 
 

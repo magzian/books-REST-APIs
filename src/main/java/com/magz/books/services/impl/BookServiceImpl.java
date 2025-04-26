@@ -22,6 +22,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public boolean isBookExists(Book book) {
+        return bookRepository.existsById(book.getIsbn());
+    }
+
+    @Override
     public Book create(final Book book) {
         final BookEntity bookEntity = bookToBookEntity(book);
         final BookEntity savedBookEntity = bookRepository.save(bookEntity);
@@ -40,6 +45,8 @@ public class BookServiceImpl implements BookService {
         return foundBooks.stream().map(book -> bookEntityToBook(book)).collect(Collectors.toList());
 
     }
+
+
 
     /*   private BookEntity bookToBookEntity(Book book) {
         return BookEntity.builder()

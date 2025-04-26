@@ -22,14 +22,19 @@ public class BookController {
     }
 
     @PutMapping(path="/books/{isbn}")
-    public ResponseEntity<Book> createBook(
+    public ResponseEntity<Book> createUpdateBook(
             @PathVariable final String isbn,
             @RequestBody final Book book){
 
         book.setIsbn(isbn);
+        final boolean isBookExists = bookService.isBookExists(book);
         final Book savedBook = bookService.create(book);
-        final ResponseEntity<Book> response = new ResponseEntity<Book>(savedBook, HttpStatus.CREATED);
-        return response;
+
+        if(isBookExists){
+            return new ResponseEntity<Book>(savedBook, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Book>(savedBook, HttpStatus.CREATED);
+        }
     }
 
     @GetMapping(path = "/books/{isbn}")
