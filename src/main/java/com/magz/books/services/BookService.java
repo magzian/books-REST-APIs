@@ -15,5 +15,5 @@ public interface BookService {
 
     List<Book> listBook();
 
-
+    void deleteBookById(String isbn);
 }

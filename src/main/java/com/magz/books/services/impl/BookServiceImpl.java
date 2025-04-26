@@ -4,7 +4,9 @@ import com.magz.books.domain.Book;
 import com.magz.books.domain.BookEntity;
 import com.magz.books.repositories.BookRepository;
 import com.magz.books.services.BookService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
@@ -44,6 +47,17 @@ public class BookServiceImpl implements BookService {
         final List <BookEntity> foundBooks = bookRepository.findAll();
         return foundBooks.stream().map(book -> bookEntityToBook(book)).collect(Collectors.toList());
 
+    }
+
+    @Override
+    public void deleteBookById(String isbn) {
+
+
+        try{
+            bookRepository.deleteById(isbn);
+        } catch(final EmptyResultDataAccessException ex) {
+            log.debug("Attempted to delete non-existing book", ex);
+        }
     }
 
 

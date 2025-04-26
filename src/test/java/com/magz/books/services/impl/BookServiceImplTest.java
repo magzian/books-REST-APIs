@@ -20,8 +20,7 @@ import static com.magz.books.TestData.testBook;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class) // Tells JUnit to use Mockito for this test class
 public class BookServiceImplTest {
@@ -142,7 +141,12 @@ public class BookServiceImplTest {
         assertEquals(true,result);
     }
 
-
+    @Test
+    public void testDeleteBookDeletesBook(){
+        final String isbn = "13223457";
+        bookService.deleteBookById(isbn);
+        verify(bookRepository, times(1)).deleteById(eq(isbn));
+    }
 }
 
 
